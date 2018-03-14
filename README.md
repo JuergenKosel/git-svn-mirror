@@ -17,3 +17,10 @@ To mirror a svn repository into shared git (bare) repository do the following:
   ../git-svn-mirror/configGitSvnRepo.sh
   ```
 
+  - Configure the shared git repository as remote of the git svn repository.
+  Continuing the example above:
+  ```
+  git clone --bare . ../felix.git
+  git remote add sharedGitRepo ../felix.git
+  ```
+
