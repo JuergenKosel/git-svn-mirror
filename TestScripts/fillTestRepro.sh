@@ -6,13 +6,14 @@ REPRO_ROOT=$(cd "$(dirname "$0")/.." && pwd)
 
 GIT_SVN_TEST_REPRO=${REPRO_ROOT}_test_git_svn
 GIT_TEST_REPRO=${REPRO_ROOT}_test_git
+SVN_REPRO_URL="file://${REPRO_ROOT}/test-svn-repository"
 
 if [ -d ${GIT_SVN_TEST_REPRO} ]
 then
     echo "${GIT_SVN_TEST_REPRO} already exists -> skipping creation"
 else
     # Before you fetch for the first time from the svn repository into the git svn repository,
-    git svn init --stdlayout file://${REPRO_ROOT}/test-svn-repository ${GIT_SVN_TEST_REPRO}
+    git svn init --stdlayout ${SVN_REPRO_URL} ${GIT_SVN_TEST_REPRO}
 
     # Add some configuration to the git svn repository.
     cd ${GIT_SVN_TEST_REPRO}
@@ -38,6 +39,13 @@ git rebase trunk MirrorMaster
 # dcommit the new trunk into the svn reprository
 git svn dcommit
 
+# Create a tag in the svn repository:
+svn cp -m"Create test branch" ${SVN_REPRO_URL}/trunk ${SVN_REPRO_URL}/tags/test-tag-$(date +%F-%H-%M-%S)
+
+# Now update the test svn repository
+${REPRO_ROOT}/git-svn-mirror.sh
+
+# The git svn repository and the git mirror repository should now contain the added svn tag (as a branch)
 
 echo "Created git svn reposiory in ${GIT_SVN_TEST_REPRO}"
 echo "and created git mirror repository in ${GIT_TEST_REPRO}"
