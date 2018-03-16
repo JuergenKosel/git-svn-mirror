@@ -1,6 +1,8 @@
 # git-svn-mirror
 Script collection to mirror all branches from subversion into (shared) git repository.
 
+  SVN-REPOSITORY => git svn repository => shared git repository
+
 ## Workflow
 To mirror a svn repository into shared git (bare) repository do the following:
 
@@ -25,3 +27,12 @@ To mirror a svn repository into shared git (bare) repository do the following:
   ```
 
   - Run periodically [git-svn-mirror.sh](git-svn-mirror.sh), e.g. as a cron job.
+
+# Tests
+
+Please take a look into the test script [TestScripts/fillTestRepro.sh](TestScripts/fillTestRepro.sh).
+Running this test script will createthe following:
+
+  - A test svn repository: ./test-svn-repository
+  - A git svn repository: ../git-svn-mirror_test_git_svn
+  - A shared git repository: ../git-svn-mirror_test_git
