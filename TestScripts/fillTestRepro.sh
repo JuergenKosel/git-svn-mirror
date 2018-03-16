@@ -47,5 +47,9 @@ ${REPRO_ROOT}/git-svn-mirror.sh
 
 # The git svn repository and the git mirror repository should now contain the added svn tag (as a branch)
 
+#remove the branch  MirrorMaster, because it is not longer needed
+git checkout trunk
+git branch -D MirrorMaster
+
 echo "Created git svn reposiory in ${GIT_SVN_TEST_REPRO}"
 echo "and created git mirror repository in ${GIT_TEST_REPRO}"
