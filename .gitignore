@@ -1,4 +1,4 @@
 # Ignore backup files:
 *~
-# Ignore the test-svn repro
-test-svn/
+# Ignore the test-svn-repository
+test-svn-repository/
