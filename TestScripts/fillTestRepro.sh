@@ -4,7 +4,7 @@
 
 REPRO_ROOT=$(cd "$(dirname "$0")/.." && pwd)
 
-${REPRO_ROOT}/TestScripts/createTestSvnRepro.sh
+${REPRO_ROOT}/TestScripts/createTestSvnRepro.sh ${REPRO_ROOT}/test-svn-repository
 
 GIT_SVN_TEST_REPRO=${REPRO_ROOT}_test_git_svn
 GIT_TEST_REPRO=${REPRO_ROOT}_test_git

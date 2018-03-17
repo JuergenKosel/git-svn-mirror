@@ -3,19 +3,20 @@
 # See also https://git-scm.com/book/en/v2/Git-and-Other-Systems-Git-as-a-Client
 # and http://svnbook.red-bean.com/en/1.7/svn.reposadmin.create.html
 
-REPRO_ROOT=$(cd "$(dirname "$0")/.." && pwd)
+# The directory to create the svn repository must be given as 1st argument
+SVNREPRODIR=$1
 
-if [ -d ${REPRO_ROOT}/test-svn-repository ]
+if [ -d ${SVNREPRODIR} ]
 then
     echo "test-svn-repository already exist -> Exiting"
     exit 1
 fi
 
-mkdir ${REPRO_ROOT}/test-svn-repository
-svnadmin create ${REPRO_ROOT}/test-svn-repository
-echo "#!/bin/sh" > ${REPRO_ROOT}/test-svn-repository/hooks/pre-revprop-change
-echo "exit 0;" >> ${REPRO_ROOT}/test-svn-repository/hooks/pre-revprop-change
-chmod +x ${REPRO_ROOT}/test-svn-repository/hooks/pre-revprop-change
+mkdir -p ${SVNREPRODIR}
+svnadmin create ${SVNREPRODIR}
+echo "#!/bin/sh" > ${SVNREPRODIR}/hooks/pre-revprop-change
+echo "exit 0;" >> ${SVNREPRODIR}/hooks/pre-revprop-change
+chmod +x ${SVNREPRODIR}/hooks/pre-revprop-change
 
 # Create standard layout
-svn mkdir -m"Create standard layout directories" file://${REPRO_ROOT}/test-svn-repository/trunk file://${REPRO_ROOT}/test-svn-repository/branches file://${REPRO_ROOT}/test-svn-repository/tags
+svn mkdir -m"Create standard layout directories" file://${SVNREPRODIR}/trunk file://${SVNREPRODIR}/branches file://${SVNREPRODIR}/tags
