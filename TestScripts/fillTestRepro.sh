@@ -50,7 +50,7 @@ git svn dcommit
 
 # Merge the vendor_branch into the trunk
 git checkout trunk
-git merge --no-ff MirrorMaster
+git merge --no-ff -m"Merge vendor_branch into trunk" MirrorMaster
 git svn dcommit
 
 #remove the branch  MirrorMaster, because it is not longer needed
