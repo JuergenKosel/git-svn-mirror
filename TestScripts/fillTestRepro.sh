@@ -22,12 +22,19 @@ else
     ${REPRO_ROOT}/configGitSvnRepo.sh
 fi
 
-git clone --bare ${GIT_SVN_TEST_REPRO} ${GIT_TEST_REPRO}
+if [ ! -d ${GIT_TEST_REPRO} ]
+then
+    git clone --bare ${GIT_SVN_TEST_REPRO} ${GIT_TEST_REPRO}
+
+    cd ${GIT_SVN_TEST_REPRO}
+    # Configure the shared git repository as remote of the git svn repository.
+    git remote add sharedGitRepo ${GIT_TEST_REPRO}
+fi
+
+# Create a vendor branch in the svn repository
+svn cp -m"Create test vendor branch" ${SVN_REPRO_URL}/trunk ${SVN_REPRO_URL}/branches/vendor_branch
 
 cd ${GIT_SVN_TEST_REPRO}
-# Configure the shared git repository as remote of the git svn repository.
-git remote add sharedGitRepo ${GIT_TEST_REPRO}
-
 # Run the mirror script to initially fill the git svn repository
 ${REPRO_ROOT}/git-svn-mirror.sh
 
@@ -37,21 +44,26 @@ git remote add GitSvnMirror ${REPRO_ROOT}
 git fetch GitSvnMirror
 git checkout -b MirrorMaster GitSvnMirror/master
 # Rebase onto trunk
-git rebase trunk MirrorMaster
-# dcommit the new trunk into the svn reprository
+git rebase vendor_branch MirrorMaster
+# dcommit the new vendor_branch into the svn reprository
 git svn dcommit
 
+# Merge the vendor_branch into the trunk
+git checkout trunk
+git merge --no-ff MirrorMaster
+git svn dcommit
+
+#remove the branch  MirrorMaster, because it is not longer needed
+git branch -D MirrorMaster
+
 # Create a tag in the svn repository:
-svn cp -m"Create test branch" ${SVN_REPRO_URL}/trunk ${SVN_REPRO_URL}/tags/test-tag-$(date +%F-%H-%M-%S)
+svn cp -m"Create test tag" ${SVN_REPRO_URL}/trunk ${SVN_REPRO_URL}/tags/test-tag-$(date +%F-%H-%M-%S)
 
 # Now update the test svn repository
 ${REPRO_ROOT}/git-svn-mirror.sh
 
 # The git svn repository and the git mirror repository should now contain the added svn tag (as a branch)
 
-#remove the branch  MirrorMaster, because it is not longer needed
-git checkout trunk
-git branch -D MirrorMaster
 
 echo "Created git svn reposiory in ${GIT_SVN_TEST_REPRO}"
 echo "and created git mirror repository in ${GIT_TEST_REPRO}"
