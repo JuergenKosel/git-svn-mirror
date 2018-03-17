@@ -31,8 +31,10 @@ To mirror a svn repository into shared git (bare) repository do the following:
 # Tests
 
 Please take a look into the test script [TestScripts/fillTestRepro.sh](TestScripts/fillTestRepro.sh).
-Running this test script will createthe following:
+Running this test script will create the following:
 
   - A test svn repository: ./test-svn-repository
   - A git svn repository: ../git-svn-mirror_test_git_svn
   - A shared git repository: ../git-svn-mirror_test_git
+
+The test script could give some idea, how to write an own script, to forward changes from a git repository back into the svn repository.
