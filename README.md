@@ -26,6 +26,31 @@ To mirror a svn repository into shared git (bare) repository do the following:
 
   - Run periodically [git-svn-mirror.sh](git-svn-mirror.sh), e.g. as a cron job.
 
+# Problems
+
+## Different git commit-ids
+
+After merge commits it happens some times, that the git-commit-ids of
+two git-svn repositories become different. Even if the git-commit-ids
+of the two repositories were synchron before the merge-commit.
+
+In my expierience, with the following workaround the
+git-repositories become synchronous again, if applied soon enough:
+
+1. Select the git-svn repository, which became out of sync with the
+   shared repository. And change the working directory into this
+   repository.
+   For excample: `cd secondary-repo`
+2. Force the git-svn branch onto the corresponding commit of the
+   reference repository. For example, if the branch trunk is out of
+   sync:
+   `cp .git/refs/remotes/sharedGitRepo/trunk .git/refs/remotes/origin`
+3. If the current checked out branch is the one, which has got out of
+   sync, reset it to the head of the reference branch, e.g.:
+   `git reset sharedGitRepo/trunk`
+4. Let git-svn update the references:
+   `git svn fetch`
+
 # Tests
 
 Please take a look into the test script [TestScripts/fillTestRepro.sh](TestScripts/fillTestRepro.sh).
