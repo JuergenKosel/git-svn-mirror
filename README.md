@@ -7,10 +7,21 @@ Script collection to mirror all branches from subversion into (shared) git repos
 To mirror a svn repository into shared git (bare) repository do the following:
 
   - Init an empty git svn repository with `git svn init`, as described in `man git-svn`. For example if you want to mirror http://your-svn-server.example.org/svn/exampleProject, run the following command:
-  ```
+  ```bash
   git svn init --stdlayout http://your-svn-server.example.org/svn/exampleProject exampleProject
   ```
-
+  - In case you want to avoid to introduce binaries from svn into git, as suggested for example in 
+    [migrate-other-systems-to-git](https://docs.microsoft.com/en-us/azure/devops/learn/git/migrate-other-systems-to-git#remove-binary-dependencies-and-assets), then you should use a `git svn init` command similar to this one:
+  ```bash
+  git svn init --stdlayout --ignore-paths='.(dll|exe|lib|pdb|so[.\d]*|a)$' http://your-svn-server.example.org/svn/exampleProject exampleProject
+  ```
+  - The regular expression in the example above matches the following file name endings:
+     - `*.dll`
+     - `*.exe`
+     - `*.lib`
+     - `*.pdb`
+     - `*.so.1.2.3`
+     - `*.a`
   - Before you fetch for the first time from the svn repository into the git svn repository, you need to add some configuration to the git svn repository.
   Therefore run the helper script [configGitSvnRepo.sh](configGitSvnRepo.sh)
   Continuing the example above:
