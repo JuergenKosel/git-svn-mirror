@@ -13,7 +13,7 @@ To mirror a svn repository into shared git (bare) repository do the following:
   - In case you want to avoid to introduce binaries from svn into git, as suggested for example in 
     [migrate-other-systems-to-git](https://docs.microsoft.com/en-us/azure/devops/learn/git/migrate-other-systems-to-git#remove-binary-dependencies-and-assets), then you should use a `git svn init` command similar to this one:
   ```bash
-  git svn init --stdlayout --ignore-paths='.(dll|exe|lib|pdb|so[.\d]*|a)$' http://your-svn-server.example.org/svn/exampleProject exampleProject
+  git svn init --stdlayout --ignore-paths='.(dll|exe|lib|pdb|so[\.\d]*|a)$' http://your-svn-server.example.org/svn/exampleProject exampleProject
   ```
   - The regular expression in the example above matches the following file name endings:
      - `*.dll`
